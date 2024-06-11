@@ -1,0 +1,14 @@
+{
+  "name": "trainee-program",
+  "version": "1.0.0",
+  "description": "crud on trainee data",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node index.js"
+  },
+  "keywords": [
+    ".."
+  ],
+  "author": "Ag",
+  "license": "ISC"
+}
