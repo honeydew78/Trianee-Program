@@ -1,6 +1,7 @@
 {
   "name": "trainee-program",
   "version": "1.0.0",
+  "type": "module",
   "description": "crud on trainee data",
   "main": "index.js",
   "scripts": {
