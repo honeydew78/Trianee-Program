@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.controllers.js";
+import { registerAdmin } from "../controllers/admin.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 // import { verifyJWT } from "../middlewares/auth.middlewares.js";
 // import { refreshAccessToken } from "../controllers/user.controllers.js";
@@ -13,7 +13,7 @@ router.route("/register").post(
       maxCount: 1
      }
    ]),
-   registerUser
+   registerAdmin
 )
 
 export default router

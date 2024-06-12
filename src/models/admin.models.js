@@ -2,7 +2,7 @@ import mongoose,{Schema} from "mongoose"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
-const userSchema = new Schema(
+const adminSchema = new Schema(
    {
       username: {
          type: String,
@@ -38,17 +38,17 @@ const userSchema = new Schema(
       }
    },{timestamps: true})
 
-userSchema.pre("save", async function (next){
+adminSchema.pre("save", async function (next){
    if(!this.isModified("password")) return next();
    this.password = await bcrypt.hash(this.password, 10)
    next()
 })//password encrypted (by hooks in middleware)
     
-userSchema.methods.isPasswordCorrect = async function(password){
+adminSchema.methods.isPasswordCorrect = async function(password){
    return await bcrypt.compare(password,this.password)
 }//check password is correct
     
-userSchema.methods.generateAccessToken = function(){
+adminSchema.methods.generateAccessToken = function(){
    return jwt.sign(
    {
       _id: this._id,
@@ -61,7 +61,7 @@ userSchema.methods.generateAccessToken = function(){
       expiresIn: process.env.ACCESS_TOKEN_EXPIRY
    })
 }
-userSchema.methods.generateRefreshToken = function(){
+adminSchema.methods.generateRefreshToken = function(){
    return jwt.sign(
    {
      _id: this._id,
@@ -72,4 +72,4 @@ userSchema.methods.generateRefreshToken = function(){
    })
 }
 
-export const User = mongoose.model("User",userSchema)
+export const Admin = mongoose.model("Admin",adminSchema)

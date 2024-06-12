@@ -1,11 +1,11 @@
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { ApiError } from "../utils/ApiError.js"
-import { User } from "../models/user.models.js"
+import { Admin } from "../models/admin.models.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 // import jwt from "jsonwebtoken"
 
-const registerUser = asyncHandler(async (req,res) => {
+const registerAdmin = asyncHandler(async (req,res) => {
   const {fullName,email,username,password} = req.body
 
   if(
@@ -14,12 +14,12 @@ const registerUser = asyncHandler(async (req,res) => {
    throw new ApiError(400,"All fields are required")
   }
 
-  const existedUser = await User.findOne({
+  const existedAdmin = await Admin.findOne({
    $or: [{email},{username}]
   })
 
-  if(existedUser){
-   throw new ApiError(409,"User already exists")
+  if(existedAdmin){
+   throw new ApiError(409,"Admin already exists")
   }
 
   const profilePicLocalPath = req.files?.profilePic[0]?.path;
@@ -34,7 +34,7 @@ const registerUser = asyncHandler(async (req,res) => {
    throw new ApiError(400,"ProfilePic file is required")
   }
 
-  const user = await User.create({
+  const admin = await Admin.create({
    fullName,
    profilePic: profilePic.url,
    email,
@@ -42,9 +42,9 @@ const registerUser = asyncHandler(async (req,res) => {
    username: username.toLowerCase()
   })
 
-  const createdUser = await User.findById(user._id).select("-password -refreshToken")
-  if(!createdUser){
-   throw new ApiError(500,"Something went wrong while registering the user")
+  const createdAdmin = await Admin.findById(admin._id).select("-password -refreshToken")
+  if(!createdAdmin){
+   throw new ApiError(500,"Something went wrong while registering admin")
   }
 
   return res
@@ -52,12 +52,12 @@ const registerUser = asyncHandler(async (req,res) => {
   .json(
     new ApiResponse(
       200,
-      createdUser,
-      "User registerd successfully"
+      createdAdmin,
+      "Admin registerd successfully"
     )
   )
 })
 
 export {
-   registerUser
+  registerAdmin
 }
